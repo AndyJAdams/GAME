@@ -76,6 +76,7 @@ function Ball(){
 
 function Paddle(x,minX,maxX){
   this.x = x; this.y = canvas.height/2;
+  this.sx = this.x; this.sy = this.y;
   this.dx = 0; this.dy = 0;
   this.h = 120;
   this.minX = minX; this.maxX = maxX;
@@ -109,6 +110,14 @@ function Paddle(x,minX,maxX){
 	}
     this.draw();
   }
+  
+  this.reset = function(){
+	this.score = 0;
+	this.dx = 0; this.dy = 0;
+	this.h = 120;
+	this.power = -1;
+	this.x = this.sx; this.y = this.sy;
+  }
 }
 
 var b = new Ball();
@@ -128,7 +137,12 @@ function Animate(){
   }
   ctx.fillText(players[0].score,canvas.width/2-70,80);
   ctx.fillText(players[1].score,canvas.width/2+30,80);
-  b.update();
+  if(players[0].score == 10 || players[1].score == 10){
+	players[0].reset();
+	players[1].reset();
+  } else {
+	b.update();
+  }
 }
 
 document.addEventListener('keydown',keydownHandler,false);
@@ -139,13 +153,13 @@ function keydownHandler(e){
 	if(e.keyCode == 65){players[0].dx-=5;}//P1 left
 	if(e.keyCode == 83){players[0].dy+=5;}//P1 down
 	if(e.keyCode == 68){players[0].dx+=5;}//P1 right
-	if(e.keyCode == 32){players[0].h -= 5; players[0].power = 1;}//POWERUP HERE
+	if(e.keyCode == 32){players[0].h -= 10; players[0].power = 1;}//POWERUP HERE
 	
 	if(e.keyCode == 38){players[1].dy-=5;}//P1 up
 	if(e.keyCode == 37){players[1].dx-=5;}//P1 left
 	if(e.keyCode == 40){players[1].dy+=5;}//P1 down
 	if(e.keyCode == 39){players[1].dx+=5;}//P1 right
-	if(e.keyCode == 16){players[1].h -= 5; players[1].power = 1;}//P2 POWERUP HERE
+	if(e.keyCode == 16){players[1].h -= 10; players[1].power = 1;}//P2 POWERUP HERE
 }
 
 function keyupHandler(e){
